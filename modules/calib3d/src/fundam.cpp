@@ -374,7 +374,7 @@ cv::Mat cv::findHomography( InputArray _points1, InputArray _points2,
                 return Mat();
             convertPointsFromHomogeneous(p, p);
         }
-        p.reshape(2, npoints).convertTo(m, CV_32F);
+        p.reshape(2, npoints).convertTo(m, CV_64F);
     }
 
     CV_Assert( src.checkVector(2) == dst.checkVector(2) );
@@ -400,7 +400,7 @@ cv::Mat cv::findHomography( InputArray _points1, InputArray _points2,
 
     if( result && npoints > 4 && method != RHO)
     {
-        compressElems( src.ptr<Point2f>(), tempMask.ptr<uchar>(), 1, npoints );
+        compressElems( src.ptr<Point2d>(), tempMask.ptr<uchar>(), 1, npoints );
         npoints = compressElems( dst.ptr<Point2f>(), tempMask.ptr<uchar>(), 1, npoints );
         if( npoints > 0 )
         {
