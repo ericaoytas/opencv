@@ -1317,8 +1317,7 @@ static double cvCalibrateCamera2Internal( const CvMat* objectPoints,
     if( imageSize.width <= 0 || imageSize.height <= 0 )
         CV_Error( CV_StsOutOfRange, "image width and height must be positive" );
 
-    if( CV_MAT_TYPE(npoints->type) != CV_32SC1 ||
-        (npoints->rows != 1 && npoints->cols != 1) )
+    if(npoints->rows != 1 && npoints->cols != 1) 
         CV_Error( CV_StsUnsupportedFormat,
             "the array of point counters must be 1-dimensional integer vector" );
     if(flags & CALIB_TILTED_MODEL)
@@ -3134,36 +3133,36 @@ static void collectCalibrationData( InputArrayOfArrays objectPoints,
 
     for( i = 0; i < nimages; i++ )
     {
-        ni = objectPoints.getMat(i).checkVector(3, CV_32F);
+        ni = objectPoints.getMat(i).checkVector(3, CV_64F);
         if( ni <= 0 )
-            CV_Error(CV_StsUnsupportedFormat, "objectPoints should contain vector of vectors of points of type Point3f");
-        int ni1 = imagePoints1.getMat(i).checkVector(2, CV_32F);
+            CV_Error(CV_StsUnsupportedFormat, "objectPoints should contain vector of vectors of points of type Point3d");
+        int ni1 = imagePoints1.getMat(i).checkVector(2, CV_64F);
         if( ni1 <= 0 )
-            CV_Error(CV_StsUnsupportedFormat, "imagePoints1 should contain vector of vectors of points of type Point2f");
+            CV_Error(CV_StsUnsupportedFormat, "imagePoints1 should contain vector of vectors of points of type Point2d");
         CV_Assert( ni == ni1 );
 
         total += ni;
     }
 
-    npoints.create(1, (int)nimages, CV_32S);
-    objPtMat.create(1, (int)total, CV_32FC3);
-    imgPtMat1.create(1, (int)total, CV_32FC2);
+    npoints.create(1, (int)nimages, CV_64S);
+    objPtMat.create(1, (int)total, CV_64FC3);
+    imgPtMat1.create(1, (int)total, CV_64FC2);
     Point2f* imgPtData2 = 0;
 
     if( imgPtMat2 )
     {
-        imgPtMat2->create(1, (int)total, CV_32FC2);
+        imgPtMat2->create(1, (int)total, CV_64FC2);
         imgPtData2 = imgPtMat2->ptr<Point2f>();
     }
 
-    Point3f* objPtData = objPtMat.ptr<Point3f>();
-    Point2f* imgPtData1 = imgPtMat1.ptr<Point2f>();
+    Point3f* objPtData = objPtMat.ptr<Point3d>();
+    Point2f* imgPtData1 = imgPtMat1.ptr<Point2d>();
 
     for( i = 0; i < nimages; i++, j += ni )
     {
         Mat objpt = objectPoints.getMat(i);
         Mat imgpt1 = imagePoints1.getMat(i);
-        ni = objpt.checkVector(3, CV_32F);
+        ni = objpt.checkVector(3, CV_64F);
         npoints.at<int>(i) = ni;
         memcpy( objPtData + j, objpt.ptr(), ni*sizeof(objPtData[0]) );
         memcpy( imgPtData1 + j, imgpt1.ptr(), ni*sizeof(imgPtData1[0]) );
@@ -3171,7 +3170,7 @@ static void collectCalibrationData( InputArrayOfArrays objectPoints,
         if( imgPtData2 )
         {
             Mat imgpt2 = imagePoints2.getMat(i);
-            int ni2 = imgpt2.checkVector(2, CV_32F);
+            int ni2 = imgpt2.checkVector(2, CV_64F);
             CV_Assert( ni == ni2 );
             memcpy( imgPtData2 + j, imgpt2.ptr(), ni*sizeof(imgPtData2[0]) );
         }
