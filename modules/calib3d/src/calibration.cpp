@@ -1196,7 +1196,7 @@ CV_IMPL void cvInitIntrinsicParams2D( const CvMat* objectPoints,
     CvMat matH = cvMat( 3, 3, CV_64F, H );
     CvMat _f = cvMat( 2, 1, CV_64F, f );
 
-    assert( CV_MAT_TYPE(npoints->type) == CV_32SC1 &&
+    assert( CV_MAT_TYPE(npoints->type) == CV_64SC1 &&
             CV_IS_MAT_CONT(npoints->type) );
     nimages = npoints->rows + npoints->cols - 1;
 
