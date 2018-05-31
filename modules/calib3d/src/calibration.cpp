@@ -1304,8 +1304,8 @@ static double cvCalibrateCamera2Internal( const CvMat* objectPoints,
     double reprojErr = 0;
 
     Matx33d A;
-    double k[14] = {0};
-    CvMat matA = cvMat(3, 3, CV_64F, A.val), _k;
+    double k[14] = {0};                                             
+    CvMat matA = cvMat(3, 3, CV_64F, A.val), _k;                                //matA is double
     int i, nimages, maxPoints = 0, ni = 0, pos, total = 0, nparams, npstep, cn;
     double aspectRatio = 0.;
 
@@ -3152,7 +3152,7 @@ static void collectCalibrationData( InputArrayOfArrays objectPoints,
     if( imgPtMat2 )
     {
         imgPtMat2->create(1, (int)total, CV_64FC2);
-        imgPtData2 = imgPtMat2->ptr<Point2f>();
+        imgPtData2 = imgPtMat2->ptr<Point3d>();
     }
 
     Point3f* objPtData = objPtMat.ptr<Point3d>();
